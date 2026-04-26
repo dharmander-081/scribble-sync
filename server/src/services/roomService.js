@@ -15,7 +15,10 @@ const startTurn = (io, roomId) => {
   // Rule: Need at least 2 players to start
   if (activePlayers.length < 2) {
     room.turnStatus = 'starting';
-    io.to(roomId).emit('system_message', { text: 'Waiting for more players to start...' });
+    io.to(roomId).emit('system_message', { 
+      id: Math.random().toString(36).substring(2, 9),
+      text: 'Waiting for more players to start...' 
+    });
     io.to(roomId).emit('room_state_sync', room);
     return;
   }
@@ -98,7 +101,10 @@ const handleDrawerDisconnect = (io, roomId, playerId) => {
   if (!room || room.currentDrawerId !== playerId) return;
 
   if (room.turnStatus === 'active') {
-    io.to(roomId).emit('system_message', { text: 'Drawer left the game! Ending turn...' });
+    io.to(roomId).emit('system_message', { 
+      id: Math.random().toString(36).substring(2, 9),
+      text: 'Drawer left the game! Ending turn...' 
+    });
     endTurn(io, roomId);
   }
 };

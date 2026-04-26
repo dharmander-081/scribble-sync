@@ -103,10 +103,11 @@ export const ChatPanel: React.FC = () => {
             Start guessing!
           </div>
         ) : (
-          messages.map((msg) => {
+          messages.map((msg, index) => {
+            const key = msg.id || `msg-${index}`;
             if (msg.type === 'system') {
               return (
-                <div key={msg.id} className="text-center text-sm italic text-slate-500 my-2">
+                <div key={key} className="text-center text-sm italic text-slate-500 my-2">
                   {msg.text}
                 </div>
               );
@@ -114,7 +115,7 @@ export const ChatPanel: React.FC = () => {
             
             if (msg.type === 'correct_guess') {
               return (
-                <div key={msg.id} className="bg-green-100 text-green-800 px-3 py-2 rounded-xl text-sm font-semibold animate-pulse">
+                <div key={key} className="bg-green-100 text-green-800 px-3 py-2 rounded-xl text-sm font-semibold animate-pulse">
                   {msg.username} {msg.text}
                 </div>
               );
@@ -122,14 +123,14 @@ export const ChatPanel: React.FC = () => {
 
             if (msg.type === 'close_guess') {
               return (
-                <div key={msg.id} className="bg-yellow-100 text-yellow-800 px-3 py-2 rounded-xl text-sm font-semibold">
+                <div key={key} className="bg-yellow-100 text-yellow-800 px-3 py-2 rounded-xl text-sm font-semibold">
                   {msg.username}: {msg.text}
                 </div>
               );
             }
 
             return (
-              <div key={msg.id} className="flex flex-col">
+              <div key={key} className="flex flex-col">
                 <span className="text-xs text-slate-500 font-semibold mb-1 ml-1">{msg.username}</span>
                 <div className="bg-slate-100 text-slate-800 px-3 py-2 rounded-2xl rounded-tl-sm w-fit max-w-[90%] text-sm">
                   {msg.text}

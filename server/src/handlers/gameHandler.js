@@ -47,6 +47,7 @@ const registerGameHandlers = (io, socket) => {
       player.score += score;
 
       io.to(roomId).emit('correct_guess', {
+        id: Math.random().toString(36).substring(2, 9),
         playerId,
         username,
         score: player.score,
