@@ -1,5 +1,5 @@
 const { getRoom } = require('../services/storageService');
-const { startTurn } = require('../services/roomService');
+const { startTurn, endTurn } = require('../services/roomService');
 
 const registerGameHandlers = (io, socket) => {
   const handleSendGuess = ({ guess }) => {
@@ -59,8 +59,8 @@ const registerGameHandlers = (io, socket) => {
       const allGuessed = activeGuessers.every(p => p.hasGuessedCorrectly);
 
       if (allGuessed && activeGuessers.length > 0) {
-        // Trigger turn end early if roomService provides a way (or just wait for timer)
-        // For now, we'll let the timer handle it or add an early-end trigger in roomService
+        console.log(`[Game] All guessers in ${roomId} guessed correctly. Ending turn early.`);
+        endTurn(io, roomId);
       }
     } else {
       // Normal chat message
