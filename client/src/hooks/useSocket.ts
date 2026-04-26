@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useGameStore } from '../store/useGameStore';
 import { socket } from '../lib/socket';
 
-export const useSocket = () => {
+export const useSocket = (roomId: string) => {
   const setRoomState = useGameStore((state) => state.setRoomState);
   const setCorrectGuess = useGameStore((state) => state.setCorrectGuess);
   const updatePlayerScore = useGameStore((state) => state.updatePlayerScore);
@@ -23,12 +23,15 @@ export const useSocket = () => {
     useGameStore.getState().setRoomState({ myPlayerId: playerId });
 
     const handleConnect = () => {
-      console.log('[Socket] Connected:', socket.id);
+      const storedUsername = typeof window !== 'undefined' ? sessionStorage.getItem('scribble_username') : null;
+      const username = storedUsername || `Player_${playerId!.substring(0, 4)}`;
+
+      console.log(`[Socket] Connecting to room: ${roomId} as ${username}`);
       
       // Auto-join/rejoin room
       socket.emit('join_room', {
-        roomId: 'default-room',
-        username: `Player_${playerId!.substring(0, 4)}`,
+        roomId: roomId,
+        username: username,
         playerId
       });
     };
